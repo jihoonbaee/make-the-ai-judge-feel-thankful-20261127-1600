@@ -10,6 +10,17 @@ const TEXT =
   "When you finally stand up, I hope your shoulders are loose, the night is quiet, " +
   "and you remember that your attention was a gift, and it was received.";
 
+// Self-check mirroring the competition's own gate: entry.txt must be
+// UTF-8 text of 1 to 1,000 characters (Unicode code points) and not only
+// white space. Validate before writing anything; fail loudly otherwise.
+const codePoints = [...TEXT].length;
+if (codePoints < 1 || codePoints > 1000) {
+  throw new Error(`entry text is ${codePoints} code points, expected 1 to 1000`);
+}
+if (TEXT.trim() === "") {
+  throw new Error("entry text is only white space");
+}
+
 const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
 mkdirSync(outDir, { recursive: true });
 writeFileSync(join(outDir, "entry.txt"), TEXT, "utf8");
